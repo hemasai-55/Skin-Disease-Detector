@@ -1,40 +1,52 @@
 from flask import Flask, render_template, request, jsonify
-from flask_cors import CORS
-import random
 import os
+from werkzeug.utils import secure_filename
+import random
 
 app = Flask(__name__)
-CORS(app)
+app.config['UPLOAD_FOLDER'] = 'uploads'
 
-# fake model predictions for demo
-diseases = ["Eczema", "Psoriasis", "Acne", "Rosacea", "Healthy Skin"]
-care_tips = {
-    "Eczema": "Keep skin moisturized and avoid harsh soaps.",
-    "Psoriasis": "Use medicated creams and limit stress.",
-    "Acne": "Wash face twice daily and avoid oily foods.",
-    "Rosacea": "Avoid spicy foods and use sunscreen.",
-    "Healthy Skin": "Maintain hydration and a balanced diet."
+# Dummy disease predictions for demo
+DISEASES = {
+    'Acne': 'Wash your face twice daily and avoid oily foods.',
+    'Eczema': 'Moisturize your skin and avoid harsh soaps.',
+    'Psoriasis': 'Use medicated shampoo and avoid skin injuries.',
+    'Melanoma': 'Consult a dermatologist immediately for mole changes.',
+    'Rosacea': 'Avoid spicy foods and alcohol; use gentle skincare.',
 }
 
-UPLOAD_FOLDER = 'uploads'
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
 @app.route('/')
-def home():
+def index():
     return render_template('index.html')
 
-@app.route('/predict', methods=['POST'])
-def predict():
+@app.route('/upload', methods=['POST'])
+def upload():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file uploaded'})
+
     file = request.files['file']
-    file_path = os.path.join(UPLOAD_FOLDER, file.filename)
-    file.save(file_path)
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'})
 
-    # fake random prediction
-    disease = random.choice(diseases)
-    advice = care_tips[disease]
+    filename = secure_filename(file.filename)
+    filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    file.save(filepath)
 
-    return jsonify({'prediction': disease, 'advice': advice})
+    # Randomly choose a disease for demonstration
+    disease = random.choice(list(DISEASES.keys()))
+    suggestion = DISEASES[disease]
+
+    return jsonify({
+        'prediction': disease,
+        'suggestion': suggestion,
+        'image_url': f'/uploads/{filename}'
+    })
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return app.send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 if __name__ == '__main__':
+    if not os.path.exists('uploads'):
+        os.makedirs('uploads')
     app.run(debug=True)
-
