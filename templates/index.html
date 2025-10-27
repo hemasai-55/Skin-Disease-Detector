@@ -1,32 +1,23 @@
-
----
-
-## 📘 5. `templates/index.html`
-
-```html
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>AI Skin Disease Detector</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <title>AI Skin Disease Detector</title>
 </head>
-<body>
-    <h1>AI Skin Disease Detector</h1>
+<body style="font-family: Arial; text-align: center; margin-top: 50px;">
+  <h1>AI Skin Disease Detector</h1>
+  <form action="/predict" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" accept="image/*" required>
+    <button type="submit">Analyze</button>
+  </form>
 
-    <form method="POST" enctype="multipart/form-data">
-        <input type="file" name="image" accept="image/*" required>
-        <button type="submit">Analyze</button>
-    </form>
+  {% if image_path %}
+    <h3>Uploaded Image:</h3>
+    <img src="{{ image_path }}" width="250" style="border: 2px solid #ccc;">
+  {% endif %}
 
-    {% if diagnosis %}
-        <div class="result">
-            <h2>Prediction: {{ diagnosis }}</h2>
-            {% if image_path %}
-                <img src="{{ image_path }}" alt="Uploaded Image" width="300">
-            {% endif %}
-        </div>
-    {% endif %}
-
+  {% if prediction %}
+    <h2>Prediction: {{ prediction }}</h2>
+    <p><b>Care Tip:</b> {{ tip }}</p>
+  {% endif %}
 </body>
 </html>
