@@ -1,21 +1,32 @@
+
+---
+
+## 📘 5. `templates/index.html`
+
+```html
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Skin Disease Detector</title>
+    <meta charset="UTF-8">
+    <title>AI Skin Disease Detector</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <h1>AI Skin Disease Detector</h1>
+
     <form method="POST" enctype="multipart/form-data">
-        <input type="file" name="image" required>
+        <input type="file" name="image" accept="image/*" required>
         <button type="submit">Analyze</button>
     </form>
 
     {% if diagnosis %}
-        <h2>Prediction: {{ diagnosis }}</h2>
-        {% if image_path %}
-            <img src="{{ image_path }}" width="300">
-        {% endif %}
+        <div class="result">
+            <h2>Prediction: {{ diagnosis }}</h2>
+            {% if image_path %}
+                <img src="{{ image_path }}" alt="Uploaded Image" width="300">
+            {% endif %}
+        </div>
     {% endif %}
+
 </body>
 </html>
