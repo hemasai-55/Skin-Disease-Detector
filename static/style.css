@@ -3,24 +3,10 @@ body {
     text-align: center;
     margin: 50px;
 }
-
-.container {
-    max-width: 500px;
-    margin: auto;
-}
-
-input[type="file"] {
-    margin: 20px 0;
-}
-
 button {
     padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
+    background: #4CAF50;
     border: none;
+    color: white;
     cursor: pointer;
-}
-
-button:hover {
-    background-color: #45a049;
 }
