@@ -1,1 +1,42 @@
+from flask import Flask, render_template, request
+import os
+
+app = Flask(__name__)
+
+# Define upload folder
+UPLOAD_FOLDER = 'uploads'
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+@app.route('/')
+def home():
+    return '''
+    <h2>Upload Test</h2>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <button type="submit">Upload</button>
+    </form>
+    '''
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    # Check if file exists in request
+    if 'file' not in request.files:
+        return "No file part"
+    
+    file = request.files['file']
+    
+    if file.filename == '':
+        return "No selected file"
+
+    # Save the uploaded file to 'uploads' folder
+    filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+    file.save(filepath)
+
+    return f"✅ File uploaded successfully! Saved at: {filepath}"
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
