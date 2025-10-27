@@ -1,23 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>Skin Disease Detector</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>AI-Powered Skin Disease Detector</h1>
-        <form method="POST" enctype="multipart/form-data">
-            <input type="file" name="image" required>
-            <button type="submit">Analyze</button>
-        </form>
+    <h1>AI Skin Disease Detector</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="image" required>
+        <button type="submit">Analyze</button>
+    </form>
 
-        {% if diagnosis %}
-            <h2>Diagnosis: {{ diagnosis }}</h2>
-            <p>Care Tip: {{ tip }}</p>
+    {% if diagnosis %}
+        <h2>Prediction: {{ diagnosis }}</h2>
+        {% if image_path %}
             <img src="{{ image_path }}" width="300">
         {% endif %}
-    </div>
+    {% endif %}
 </body>
 </html>
