@@ -9,10 +9,9 @@ UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # Load model
-MODEL_PATH = 'model/skin_disease_model.h5'
-model = load_model(MODEL_PATH)
+model = load_model('model/skin_disease_model.h5')
 
-# Label names
+# Labels for predictions
 labels = {0: "Acne", 1: "Eczema", 2: "Psoriasis", 3: "Rosacea", 4: "Normal"}
 
 def prepare_image(img_path):
