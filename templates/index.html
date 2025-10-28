@@ -1,23 +1,30 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <title>AI Skin Disease Detector</title>
+  <meta charset="utf-8" />
+  <title>Skin Disease Detector</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body style="font-family: Arial; text-align: center; margin-top: 50px;">
-  <h1>AI Skin Disease Detector</h1>
-  <form action="/predict" method="post" enctype="multipart/form-data">
-    <input type="file" name="file" accept="image/*" required>
-    <button type="submit">Analyze</button>
-  </form>
+<body>
+  <div class="container">
+    <h1>AI Skin Disease Detector</h1>
 
-  {% if image_path %}
-    <h3>Uploaded Image:</h3>
-    <img src="{{ image_path }}" width="250" style="border: 2px solid #ccc;">
-  {% endif %}
+    <form id="uploadForm">
+      <input type="file" id="imageInput" name="image" accept="image/*" required />
+      <button type="submit">Upload & Analyze</button>
+    </form>
 
-  {% if prediction %}
-    <h2>Prediction: {{ prediction }}</h2>
-    <p><b>Care Tip:</b> {{ tip }}</p>
-  {% endif %}
+    <div id="result" style="display:none;">
+      <h2>Result</h2>
+      <img id="preview" src="" alt="uploaded preview"/>
+      <p id="label"></p>
+      <p id="confidence"></p>
+    </div>
+
+    <div id="error" class="error" style="display:none;"></div>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
