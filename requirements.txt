@@ -1,5 +1,5 @@
-flask
-tensorflow
-pillow
+Flask>=2.0
+Werkzeug>=2.0
+Pillow
 numpy
-
+# tensorflow  (only if you want real model support; large install)
