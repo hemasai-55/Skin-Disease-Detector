@@ -1,17 +1,13 @@
-# create_dummy_model.py
+cat > create_dummy_model.py << 'EOF'
 import tensorflow as tf
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Flatten, Input
-import os
 
-os.makedirs("model", exist_ok=True)
-
-model = Sequential([
-    Input(shape=(224, 224, 3)),
-    Flatten(),
-    Dense(128, activation='relu'),
-    Dense(5, activation='softmax')
+model = tf.keras.Sequential([
+    tf.keras.layers.Input(shape=(224,224,3)),
+    tf.keras.layers.Conv2D(16,(3,3),activation='relu'),
+    tf.keras.layers.MaxPooling2D(),
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(3,activation='softmax')
 ])
-
-model.save("model/skin_disease_model.h5")
-print("✅ Dummy model saved successfully at model/skin_disease_model.h5")
+model.save('model/skin_disease_model.h5')
+print("✅ Dummy model saved in model/skin_disease_model.h5")
+EOF
